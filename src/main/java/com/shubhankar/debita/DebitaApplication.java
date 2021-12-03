@@ -1,4 +1,4 @@
-package com.shubhankar.debita.debita;
+package com.shubhankar.debita;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
