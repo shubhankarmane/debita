@@ -2,6 +2,7 @@ package com.shubhankar.debita.controller;
 
 import com.shubhankar.debita.model.User;
 import com.shubhankar.debita.request.UserRequest;
+import com.shubhankar.debita.response.UserResponse;
 import com.shubhankar.debita.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,12 +22,9 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/")
-    public ResponseEntity<User> createUser(@RequestBody UserRequest userRequest) {
-        System.out.println("userRequest = " + userRequest);
-
+    @PostMapping("/register")
+    public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest userRequest) {
         User createdUser = userService.createUser(userRequest);
-
-        return new ResponseEntity<>(createdUser, HttpStatus.OK);
+        return new ResponseEntity<>(new UserResponse(createdUser), HttpStatus.OK);
     }
 }

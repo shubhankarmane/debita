@@ -3,6 +3,7 @@ package com.shubhankar.debita.service;
 import com.shubhankar.debita.model.User;
 import com.shubhankar.debita.repository.UserRepository;
 import com.shubhankar.debita.request.UserRequest;
+import com.shubhankar.debita.util.Encrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,8 @@ public class UserService {
     }
 
     public User createUser(UserRequest userRequest) {
-        User user = new User(userRequest.getFirstName(), userRequest.getLastName(), userRequest.getEmail(), userRequest.getPassword());
+        String hashedPassword = Encrypt.hashPassword(userRequest.getPassword());
+        User user = new User(userRequest.getFirstName(), userRequest.getLastName(), userRequest.getEmail(), hashedPassword);
         user = userRepository.save(user);
         return user;
     }
