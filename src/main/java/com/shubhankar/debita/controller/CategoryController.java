@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.Map;
 
 @RestController
@@ -23,7 +24,9 @@ public class CategoryController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<CategoryResponse> createCategory(@RequestBody CategoryRequest categoryRequest, HttpServletRequest request) {
+    public ResponseEntity<CategoryResponse> createCategory(
+            @Valid @RequestBody CategoryRequest categoryRequest,
+            HttpServletRequest request) {
         Category createdCategory = categoryService.createCategory(categoryRequest, (Integer) request.getAttribute("userId"));
         return new ResponseEntity<>(new CategoryResponse(createdCategory), HttpStatus.OK);
     }
@@ -39,13 +42,13 @@ public class CategoryController {
 
     @PutMapping("/{categoryId}")
     public ResponseEntity<CategoryResponse> updateCategory(@PathVariable Integer categoryId, HttpServletRequest request, @RequestBody CategoryRequest categoryRequest) {
-        Category updatedCategory = categoryService.updateCategory(categoryId, categoryRequest);
+        Category updatedCategory = categoryService.updateCategory(categoryId, (Integer) request.getAttribute("userId"),categoryRequest);
         return new ResponseEntity<>(new CategoryResponse(updatedCategory), HttpStatus.OK);
     }
 
     @DeleteMapping("/{categoryId}")
     public ResponseEntity<CategoryResponse> deleteCategory(@PathVariable Integer categoryId, HttpServletRequest request) {
-        Category deletedCategory = categoryService.deleteCategory(categoryId);
+        Category deletedCategory = categoryService.deleteCategory(categoryId, (Integer) request.getAttribute("userId"));
         return new ResponseEntity<>(new CategoryResponse(deletedCategory), HttpStatus.OK);
     }
 

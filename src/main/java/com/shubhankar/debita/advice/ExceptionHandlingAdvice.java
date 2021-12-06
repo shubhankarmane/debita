@@ -17,6 +17,7 @@ import javax.validation.ConstraintViolationException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @ControllerAdvice
 public class ExceptionHandlingAdvice {
@@ -48,5 +49,10 @@ public class ExceptionHandlingAdvice {
     @ExceptionHandler(AuthException.class)
     public ResponseEntity<String> onAuthException(AuthException e) {
         return new ResponseEntity<>("Invalid username or password", HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<String> onNoSuchElementException(NoSuchElementException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

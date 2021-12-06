@@ -20,7 +20,7 @@ public class AuthFilter extends OncePerRequestFilter {
 
         if(authHeader != null) {
             Claims claims = Jwts.parser().setSigningKey("example_demo").parseClaimsJws(authHeader).getBody();
-            System.out.println("claims = " + claims);
+//            System.out.println("claims = " + claims);
 
             Integer userId = Integer.valueOf(claims.get("userId").toString());
             request.setAttribute("userId", userId);

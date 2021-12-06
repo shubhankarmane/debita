@@ -11,10 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class CategoryService {
@@ -52,13 +49,12 @@ public class CategoryService {
         result.put("totalItems", fetchedCategories.getTotalElements());
         result.put("totalPages", fetchedCategories.getTotalPages());
         result.put("currentPage", fetchedCategories.getNumber());
-        result.put("userId", userId);
 
         return result;
     }
 
-    public Category updateCategory(Integer id, CategoryRequest categoryRequest) {
-        Category category = getCategory(id);
+    public Category updateCategory(Integer categoryId, Integer userId, CategoryRequest categoryRequest) {
+        Category category = getCategoryByIdAndUserId(categoryId, userId);
         category.setTitle(categoryRequest.getTitle());
         category.setDescription(categoryRequest.getDescription());
 
@@ -67,9 +63,18 @@ public class CategoryService {
         return category;
     }
 
-    public Category deleteCategory(Integer categoryId) {
-        Category category = getCategory(categoryId);
+    public Category deleteCategory(Integer categoryId, Integer userId) {
+        Category category = getCategoryByIdAndUserId(categoryId, userId);
         categoryRepository.delete(category);
+        return category;
+    }
+
+    private Category getCategoryByIdAndUserId(Integer categoryId, Integer userId) {
+        Category category = categoryRepository.findByIdAndUserId(categoryId, userId);
+
+        if(category == null)
+            throw new NoSuchElementException("No category found");
+
         return category;
     }
 }

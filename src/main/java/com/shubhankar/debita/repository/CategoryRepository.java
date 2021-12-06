@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
     Page<Category> findByUserId(Integer userId, Pageable pageable);
+    Category findByIdAndUserId(Integer categoryId, Integer userId);
 }
