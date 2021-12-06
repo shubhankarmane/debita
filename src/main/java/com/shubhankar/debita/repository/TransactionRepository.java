@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
     Page<Transaction> findByUserId(Integer userId, Pageable pageable);
+    Transaction findByIdAndUserId(Integer transactionId, Integer userId);
 }

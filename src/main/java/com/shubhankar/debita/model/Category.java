@@ -1,6 +1,7 @@
 package com.shubhankar.debita.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Category {

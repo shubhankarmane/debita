@@ -12,10 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class TransactionService {
@@ -38,18 +35,18 @@ public class TransactionService {
         return transaction;
     }
 
-    public Transaction getTransaction(Integer transactionId) {
-        return transactionRepository.findById(transactionId).get();
+    public Transaction getTransaction(Integer userId, Integer transactionId) {
+        return getByUserIdAndTransactionId(userId, transactionId);
     }
 
-    public Transaction deleteTransaction(Integer transactionId) {
-        Transaction transaction = getTransaction(transactionId);
+    public Transaction deleteTransaction(Integer userId, Integer transactionId) {
+        Transaction transaction = getTransaction(userId, transactionId);
         transactionRepository.delete(transaction);
         return transaction;
     }
 
-    public Transaction updateTransaction(Integer transactionId, TransactionRequest transactionRequest) {
-        Transaction transaction = getTransaction(transactionId);
+    public Transaction updateTransaction(Integer userId, Integer transactionId, TransactionRequest transactionRequest) {
+        Transaction transaction = getTransaction(userId, transactionId);
         Category category = categoryService.getCategory(transactionRequest.getCategoryId());
 
         transaction.setTransactionDate(getUnixTime());
@@ -66,10 +63,10 @@ public class TransactionService {
         return System.currentTimeMillis() / 1000L;
     }
 
-    public Map<String, Object> getUserTransactions(Integer userId, Integer page, Integer size) {
+    public Map<String, Object> getAllTransactions(Integer userId, Integer page, Integer size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Transaction> fetchedTransactions = transactionRepository.findByUserId(userId, pageable);
-        Double total = Double.valueOf(0);
+        Double total = (double) 0;
 
         List<TransactionResponse> transactions = new ArrayList<>();
         for(Transaction transaction : fetchedTransactions.getContent()) {
@@ -82,8 +79,17 @@ public class TransactionService {
         result.put("totalItems", fetchedTransactions.getTotalElements());
         result.put("totalPages", fetchedTransactions.getTotalPages());
         result.put("currentPage", fetchedTransactions.getNumber());
-        result.put("total", total);
+        result.put("totalAmount", total);
 
         return result;
+    }
+
+    private Transaction getByUserIdAndTransactionId(Integer userId, Integer transactionId) {
+        Transaction transaction = transactionRepository.findByIdAndUserId(transactionId, userId);
+
+        if(transaction == null)
+            throw new NoSuchElementException("Transaction not found");
+
+        return transaction;
     }
 }

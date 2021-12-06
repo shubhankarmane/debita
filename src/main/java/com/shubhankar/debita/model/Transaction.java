@@ -7,12 +7,15 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @ManyToOne
+    @ManyToOne(optional = false)
     private User user;
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Category category;
+    @Column(nullable = false)
     private Double amount;
+    @Column(nullable = false)
     private String note;
+    @Column(nullable = false)
     private Long transactionDate;
 
     public Transaction() {
