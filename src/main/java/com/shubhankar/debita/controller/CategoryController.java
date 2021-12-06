@@ -7,13 +7,13 @@ import com.shubhankar.debita.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/api/user/category")
+@RequestMapping("/api/category")
 public class CategoryController {
     private final CategoryService categoryService;
 
@@ -23,8 +23,30 @@ public class CategoryController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<CategoryResponse> createCategory(@RequestBody CategoryRequest categoryRequest) {
-        Category createdCategory = categoryService.createCategory(categoryRequest);
+    public ResponseEntity<CategoryResponse> createCategory(@RequestBody CategoryRequest categoryRequest, HttpServletRequest request) {
+        Category createdCategory = categoryService.createCategory(categoryRequest, (Integer) request.getAttribute("userId"));
         return new ResponseEntity<>(new CategoryResponse(createdCategory), HttpStatus.OK);
     }
+
+    @GetMapping("/")
+    public ResponseEntity<Map<String, Object>> getUserCategories(
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "5") Integer size,
+            HttpServletRequest request) {
+        Map<String, Object> response = categoryService.getUserCategories((Integer) request.getAttribute("userId"), page, size);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PutMapping("/{categoryId}")
+    public ResponseEntity<CategoryResponse> updateCategory(@PathVariable Integer categoryId, HttpServletRequest request, @RequestBody CategoryRequest categoryRequest) {
+        Category updatedCategory = categoryService.updateCategory(categoryId, categoryRequest);
+        return new ResponseEntity<>(new CategoryResponse(updatedCategory), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{categoryId}")
+    public ResponseEntity<CategoryResponse> deleteCategory(@PathVariable Integer categoryId, HttpServletRequest request) {
+        Category deletedCategory = categoryService.deleteCategory(categoryId);
+        return new ResponseEntity<>(new CategoryResponse(deletedCategory), HttpStatus.OK);
+    }
+
 }
