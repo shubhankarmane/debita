@@ -11,7 +11,6 @@ public class Category {
     private User user;
     private String title;
     private String description;
-    private Double totalExpense;
 
     public Category() {
     }
@@ -20,11 +19,6 @@ public class Category {
         this.user = user;
         this.title = title;
         this.description = description;
-        this.totalExpense = totalExpense;
-    }
-
-    public void increaseAmountBy(Double amount) {
-        this.totalExpense += amount;
     }
 
     public Integer getId() {
@@ -53,13 +47,5 @@ public class Category {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Double getTotalExpense() {
-        return totalExpense;
-    }
-
-    public void setTotalExpense(Double totalExpense) {
-        this.totalExpense = totalExpense;
     }
 }

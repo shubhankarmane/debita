@@ -6,13 +6,11 @@ public class CategoryResponse {
     private Integer id;
     private String title;
     private String description;
-    private Double totalExpense;
 
     public CategoryResponse(Category category) {
         this.id = category.getId();
         this.title = category.getTitle();
         this.description = category.getDescription();
-        this.totalExpense = category.getTotalExpense();
     }
 
     public Integer getId() {
@@ -37,13 +35,5 @@ public class CategoryResponse {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Double getTotalExpense() {
-        return totalExpense;
-    }
-
-    public void setTotalExpense(Double totalExpense) {
-        this.totalExpense = totalExpense;
     }
 }

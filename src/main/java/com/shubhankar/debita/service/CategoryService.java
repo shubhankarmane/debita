@@ -38,11 +38,6 @@ public class CategoryService {
         return categoryRepository.findById(categoryId).get();
     }
 
-    public void updateCategoryTotal(Double amount, Category category) {
-        category.increaseAmountBy(amount);
-        categoryRepository.save(category);
-    }
-
     public Map<String, Object> getUserCategories(Integer userId, Integer page, Integer size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Category> fetchedCategories = categoryRepository.findByUserId(userId, pageable);

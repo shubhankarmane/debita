@@ -7,8 +7,7 @@ public class Encrypt {
 
     public static String hashPassword(String password) {
         String salt = BCrypt.gensalt(workload);
-        String hashedPassword = BCrypt.hashpw(password, salt);
-        return hashedPassword;
+        return BCrypt.hashpw(password, salt);
     }
 
     public static Boolean checkPassword(String storedHash, String plaintextPassword) {
