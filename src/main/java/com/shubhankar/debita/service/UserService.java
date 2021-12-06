@@ -1,5 +1,6 @@
 package com.shubhankar.debita.service;
 
+import com.shubhankar.debita.exception.AuthException;
 import com.shubhankar.debita.model.User;
 import com.shubhankar.debita.repository.UserRepository;
 import com.shubhankar.debita.request.UserRequest;
@@ -9,6 +10,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Validator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +27,9 @@ public class UserService {
     public User createUser(UserRequest userRequest) {
         String hashedPassword = Encrypt.hashPassword(userRequest.getPassword());
         User user = new User(userRequest.getFirstName(), userRequest.getLastName(), userRequest.getEmail(), hashedPassword);
+
         user = userRepository.save(user);
+
         return user;
     }
 
@@ -51,12 +55,12 @@ public class UserService {
         User user = userRepository.findByEmail(email);
 
         if(user == null)
-            throw new RuntimeException("Invalid username");
+            throw new AuthException("Invalid email");
 
         if(Encrypt.checkPassword(user.getPassword(), password)) {
             return generateJWT(user);
         }
 
-        throw new RuntimeException("Invalid password");
+        throw new AuthException("Invalid password");
     }
 }

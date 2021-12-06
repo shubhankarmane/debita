@@ -5,7 +5,6 @@ import com.shubhankar.debita.model.Transaction;
 import com.shubhankar.debita.model.User;
 import com.shubhankar.debita.repository.TransactionRepository;
 import com.shubhankar.debita.request.TransactionRequest;
-import com.shubhankar.debita.response.CategoryResponse;
 import com.shubhankar.debita.response.TransactionResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

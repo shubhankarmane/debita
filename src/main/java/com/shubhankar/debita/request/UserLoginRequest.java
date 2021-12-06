@@ -1,7 +1,11 @@
 package com.shubhankar.debita.request;
 
+import javax.validation.constraints.NotNull;
+
 public class UserLoginRequest {
+    @NotNull
     private String email;
+    @NotNull
     private String password;
 
     public UserLoginRequest(String email, String password) {

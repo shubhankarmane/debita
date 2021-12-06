@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.Map;
 
 @RestController
@@ -26,19 +27,13 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<?> createUser(@Valid @RequestBody UserRequest userRequest) {
         User createdUser = userService.createUser(userRequest);
         return new ResponseEntity<>(new UserResponse(createdUser), HttpStatus.OK);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> loginUser(@RequestBody UserLoginRequest request) {
-        try {
-            return new ResponseEntity<>(userService.verifyUser(request.getEmail(), request.getPassword()), HttpStatus.OK);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-        }
+    public ResponseEntity<Map<String, String>> loginUser(@Valid @RequestBody UserLoginRequest request) {
+        return new ResponseEntity<>(userService.verifyUser(request.getEmail(), request.getPassword()), HttpStatus.OK);
     }
 }
