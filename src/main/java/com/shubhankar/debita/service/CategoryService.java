@@ -1,8 +1,10 @@
 package com.shubhankar.debita.service;
 
 import com.shubhankar.debita.model.Category;
+import com.shubhankar.debita.model.Transaction;
 import com.shubhankar.debita.model.User;
 import com.shubhankar.debita.repository.CategoryRepository;
+import com.shubhankar.debita.repository.TransactionRepository;
 import com.shubhankar.debita.request.CategoryRequest;
 import com.shubhankar.debita.response.CategoryResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +19,13 @@ import java.util.*;
 public class CategoryService {
     private final UserService userService;
     private final CategoryRepository categoryRepository;
+    private final TransactionRepository transactionRepository;
 
     @Autowired
-    public CategoryService(UserService userService, CategoryRepository categoryRepository) {
+    public CategoryService(UserService userService, CategoryRepository categoryRepository, TransactionRepository transactionRepository) {
         this.userService = userService;
         this.categoryRepository = categoryRepository;
+        this.transactionRepository = transactionRepository;
     }
 
     public Category createCategory(CategoryRequest categoryRequest, Integer userId) {
@@ -65,7 +69,11 @@ public class CategoryService {
 
     public Category deleteCategory(Integer categoryId, Integer userId) {
         Category category = getCategoryByIdAndUserId(categoryId, userId);
+        List<Transaction> transactions = transactionRepository.findByCategoryId(categoryId);
+
+        transactionRepository.deleteAll(transactions);
         categoryRepository.delete(category);
+
         return category;
     }
 
