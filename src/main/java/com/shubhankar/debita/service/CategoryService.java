@@ -36,7 +36,12 @@ public class CategoryService {
     }
 
     public Category getCategory(Integer categoryId) {
-        return categoryRepository.findById(categoryId).get();
+        Optional<Category> category = categoryRepository.findById(categoryId);
+
+        if(category.isEmpty())
+            throw new NoSuchElementException("Category not found");
+
+        return category.get();
     }
 
     public Map<String, Object> getUserCategories(Integer userId, Integer page, Integer size) {

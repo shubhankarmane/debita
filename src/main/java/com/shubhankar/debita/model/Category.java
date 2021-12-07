@@ -1,16 +1,17 @@
 package com.shubhankar.debita.model;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
+@IdClass(CategoryId.class)
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @OneToOne(optional = false)
     private User user;
-    @Column(unique = true, nullable = false)
+    @Id
+    @Column(nullable = false)
     private String title;
     private String description;
 
