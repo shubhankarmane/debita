@@ -7,10 +7,11 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 150)
     private String firstName;
+    @Column(length = 150)
     private String lastName;
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 150)
     private String email;
     @Column(nullable = false)
     private String password;

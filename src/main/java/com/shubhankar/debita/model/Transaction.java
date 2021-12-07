@@ -13,7 +13,7 @@ public class Transaction {
     private Category category;
     @Column(nullable = false)
     private Double amount;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 150)
     private String note;
     @Column(nullable = false)
     private Long transactionDate;

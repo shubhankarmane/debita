@@ -3,16 +3,15 @@ package com.shubhankar.debita.model;
 import javax.persistence.*;
 
 @Entity
-@IdClass(CategoryId.class)
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @OneToOne(optional = false)
+    @ManyToOne(optional = false)
     private User user;
-    @Id
-    @Column(nullable = false)
+    @Column(nullable = false, length = 150)
     private String title;
+    @Column(length = 150)
     private String description;
 
     public Category() {
