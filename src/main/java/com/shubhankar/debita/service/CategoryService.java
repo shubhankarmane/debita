@@ -1,5 +1,6 @@
 package com.shubhankar.debita.service;
 
+import com.shubhankar.debita.exception.DuplicateCategoryException;
 import com.shubhankar.debita.model.Category;
 import com.shubhankar.debita.model.Transaction;
 import com.shubhankar.debita.model.User;
@@ -29,8 +30,13 @@ public class CategoryService {
     }
 
     public Category createCategory(CategoryRequest categoryRequest, Integer userId) {
+        Category category = categoryRepository.findByTitleAndUserId(categoryRequest.getTitle(), userId);
+
+        if(category != null)
+            throw new DuplicateCategoryException("Category already exists");
+
         User user = userService.getUser(userId);
-        Category category = new Category(user, categoryRequest.getTitle(), categoryRequest.getDescription(), (double) 0);
+        category = new Category(user, categoryRequest.getTitle(), categoryRequest.getDescription(), (double) 0);
         category = categoryRepository.save(category);
         return category;
     }

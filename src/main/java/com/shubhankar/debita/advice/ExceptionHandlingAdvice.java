@@ -1,7 +1,7 @@
 package com.shubhankar.debita.advice;
 
 import com.shubhankar.debita.exception.AuthException;
-import com.shubhankar.debita.util.RootCause;
+import com.shubhankar.debita.exception.DuplicateCategoryException;
 import org.apache.tomcat.util.buf.StringUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -38,7 +38,7 @@ public class ExceptionHandlingAdvice {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<String> onDataIntegrityViolationException(DataIntegrityViolationException e) {
-        Throwable rootCause = RootCause.get(e);
+//        Throwable rootCause = RootCause.get(e);
         return new ResponseEntity<>("Invalid data in body", HttpStatus.CONFLICT);
     }
 
@@ -50,5 +50,10 @@ public class ExceptionHandlingAdvice {
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<String> onNoSuchElementException(NoSuchElementException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(DuplicateCategoryException.class)
+    public ResponseEntity<String> onDuplicateCategoryException(DuplicateCategoryException e) {
+        return new ResponseEntity<>("Category already exists", HttpStatus.FORBIDDEN);
     }
 }

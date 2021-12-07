@@ -10,9 +10,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -33,7 +31,12 @@ public class UserService {
     }
 
     public User getUser(Integer userId) {
-        return userRepository.findById(userId).get();
+        Optional<User> user = userRepository.findById(userId);
+
+        if(user.isEmpty())
+            throw new NoSuchElementException("User not found");
+
+        return user.get();
     }
 
     private Map<String, String> generateJWT(User user) {
