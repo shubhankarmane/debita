@@ -1,7 +1,6 @@
 package com.shubhankar.debita.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Entity
 public class User {

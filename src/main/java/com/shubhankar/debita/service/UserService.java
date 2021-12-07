@@ -10,7 +10,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.Validator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
